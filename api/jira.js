@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
     const url = `https://${JIRA_DOMAIN}/rest/api/3/search/jql?query=${encodeURIComponent(
       jql
-    )}&maxResults=100`;
+    )}&maxResults=100&fields=summary,updated,status,labels`;
 
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_TOKEN}`).toString("base64");
 
