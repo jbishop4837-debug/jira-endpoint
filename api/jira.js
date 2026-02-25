@@ -7,18 +7,24 @@ export default async function handler(req, res) {
     const jql =
       'labels = TSE_TIER3_FST_CRITICAL AND updated >= -1d ORDER BY updated DESC';
 
-    const url = `https://${JIRA_DOMAIN}/rest/api/3/search/jql?query=${encodeURIComponent(
-      jql
-    )}&maxResults=100&fields=summary,updated,status,labels`;
+    const url = `https://${JIRA_DOMAIN}/rest/api/3/search/jql`;
 
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_TOKEN}`).toString("base64");
 
+    const body = {
+      query: jql,
+      maxResults: 100,
+      fields: ["summary", "status", "updated", "labels"]
+    };
+
     const response = await fetch(url, {
-      method: "GET",
+      method: "POST",
       headers: {
         Authorization: `Basic ${auth}`,
         Accept: "application/json",
+        "Content-Type": "application/json"
       },
+      body: JSON.stringify(body)
     });
 
     const text = await response.text();
@@ -26,14 +32,14 @@ export default async function handler(req, res) {
     return res.status(response.status).json({
       ok: response.ok,
       status: response.status,
-      jiraResponse: text,
+      jiraResponse: text
     });
 
   } catch (err) {
     return res.status(500).json({
       ok: false,
       status: 500,
-      error: err.toString(),
+      error: err.toString()
     });
   }
 }
