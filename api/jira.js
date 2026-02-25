@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const JIRA_EMAIL = "jbishop@enphaseenergy.com";
-    const JIRA_TOKEN = "YOUR_REAL_TOKEN_HERE";
+    const JIRA_TOKEN = "ATATT3xFfGF0X8-NEleRVd_C_9CXxuhKiczNYx53mfo6co1XM3Ko0RurjlTocgbgIdrQM_ymemA5klTME3hZE1j3SYtyj7v90QqgNi_7wFaDiOHHpp2YxqN2VuI-eMVjsDqshccqfXcfoGqFOj3d2UOCdFZGQc2TrEFtcxnfZmdurdCY-oCm6Lo=35B37B69";
     const JIRA_DOMAIN = "enphase.atlassian.net";
 
     const jql =
