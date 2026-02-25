@@ -6,18 +6,19 @@ export default async function handler(req, res) {
 
     const auth = Buffer.from(`${email}:${token}`).toString("base64");
 
-    const body = {
-      query: "project = GSS AND updated >= -1d"
-    };
+    // URL-encoded JQL
+    const jql = encodeURIComponent(
+      "project = GSS AND updated >= -1d"
+    );
 
-    const response = await fetch(`https://${domain}/rest/api/3/search/jql`, {
-      method: "POST",
+    const url = `https://${domain}/rest/api/3/search?jql=${jql}`;
+
+    const response = await fetch(url, {
+      method: "GET",
       headers: {
         Authorization: `Basic ${auth}`,
-        "Content-Type": "application/json",
         Accept: "application/json"
-      },
-      body: JSON.stringify(body)
+      }
     });
 
     const text = await response.text();
