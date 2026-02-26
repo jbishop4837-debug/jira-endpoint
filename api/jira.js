@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
     const auth = Buffer.from(`${email}:${token}`).toString("base64");
 
-    const jql = 'project = GSS AND updated >= "2026-02-20" AND issuekey > 0 ORDER BY updated DESC';
+    const jql = 'project = GSS AND updated >= "2026-02-20" ORDER BY updated DESC';
 
     console.log("JQL sent to Jira:", jql);
 
@@ -20,8 +20,9 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        query: jql,
-        maxResults: 100
+        jql: jql,                // <-- REQUIRED
+        maxResults: 100,
+        fields: ["summary", "status", "updated"]  // <-- REQUIRED for updated filter
       })
     });
 
