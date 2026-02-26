@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const email = "jbishop@enphaseenergy.com";
-    const token = "ATATT3xFfGF0X8-NEleRVd_C_9CXxuhKiczNYx53mfo6co1XM3Ko0RurjlTocgbgIdrQM_ymemA5klTME3hZE1j3SYtyj7v90QqgNi_7wFaDiOHHpp2YxqN2VuI-eMVjsDqshccqfXcfoGqFOj3d2UOCdFZGQc2TrEFtcxnfZmdurdCY-oCm6Lo=35B37B69"; // your API token
+    const token = "ATATT3xFfGF0nWnMvymVYBwxd67rbkJE9rzknRvBrFIh3jPix5QmZDmf-xbNS_AJ86o1gRrAkW0Tuv-PyVELKEQh4mw0He1Wh0lAbE0z350BPCuiT224U031K-Wy1SdEDXjChissyUQmCHKKtYyrr0cDQ6z1oRVlpdg36bOKs4_11oyI6HYjELM=B57DE287"; // your API token
     const domain = "enphase.atlassian.net";
 
     const auth = Buffer.from(`${email}:${token}`).toString("base64");
