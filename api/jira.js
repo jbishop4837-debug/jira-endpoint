@@ -8,8 +8,9 @@ export default async function handler(req, res) {
 
     // URL-encoded JQL
     const jql = encodeURIComponent(
-  "project = GSS AND updated >= -1d ORDER BY updated DESC"
+  "project = GSS AND updated >= -1d AND statusCategory != Done ORDER BY updated DESC"
 );
+
 
 
     // NEW REQUIRED ENDPOINT
