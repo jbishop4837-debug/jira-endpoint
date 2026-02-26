@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const email = "jbishop@enphaseenergy.com";
-    const token = "ATATT3xFfGF0qXkMhmlYIhQL_1gjTFk6z6ZhZP-OMIWYUVINsg5NhiRva6iwzaOKC2fLbr87GJKdK24e0F6HqXyWcItswuEkpuWNUDF26zMwFV__WwWNBUx8SqQWfbmppSvuMadYeeW-FQs60712Fs-X9nxnhSgzKPJJ0uUfhJhc-L5PNAOBTf8=343AA894"; // your API token
+   const apiToken = process.env.JIRA_API_TOKEN;
     const domain = "enphase.atlassian.net";
 
     const auth = Buffer.from(`${email}:${token}`).toString("base64");
