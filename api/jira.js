@@ -8,8 +8,9 @@ export default async function handler(req, res) {
 
     // URL-encoded JQL
     const jql = encodeURIComponent(
-  'project = GSS AND updated >= "2026-02-25" ORDER BY updated DESC'
+  'project = GSS AND updated >= "2026-02-25" AND issuekey > 0 ORDER BY updated DESC'
 );
+
 
 
 console.log("JQL sent to Jira:", decodeURIComponent(jql));
