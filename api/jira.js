@@ -1,35 +1,32 @@
 export default async function handler(req, res) {
   try {
     const email = "jbishop@enphaseenergy.com";
-    const token = "ATATT3xFfGF0qXkMhmlYIhQL_1gjTFk6z6ZhZP-OMIWYUVINsg5NhiRva6iwzaOKC2fLbr87GJKdK24e0F6HqXyWcItswuEkpuWNUDF26zMwFV__WwWNBUx8SqQWfbmppSvuMadYeeW-FQs60712Fs-X9nxnhSgzKPJJ0uUfhJhc-L5PNAOBTf8=343AA894"; // your API token
+    const apiToken = process.env.JIRA_API_TOKEN;
     const domain = "enphase.atlassian.net";
 
-    const auth = Buffer.from(`${email}:${token}`).toString("base64");
+    const auth = Buffer.from(`${email}:${apiToken}`).toString("base64");
 
-    // Always fetch issues updated in the last 2 hours
-    const jql = 'project = GSS AND updated >= -72 AND issuekey > 0 ORDER BY updated DESC';
-
-    console.log("JQL sent to Jira:", jql);
+    const jql = "project IN (GSS, SWS, UPGD, EFW) AND labels = TSE_TIER3_FST_CRITICAL AND updated >= -3d ORDER BY created DESC";
 
     const url = `https://${domain}/rest/api/3/search/jql`;
 
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Basic ${auth}`,
-        Accept: "application/json",
+        "Authorization": `Basic ${auth}`,
+        "Accept": "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         jql: jql,
-        maxResults: 100,
+        maxResults: 500,
         fields: [
           "summary",
-          "status",
-          "updated",
+          "customfield_12953",
           "assignee",
           "reporter",
-          "customfield_12953" // Site ID
+          "updated",
+          "status"
         ]
       })
     });
