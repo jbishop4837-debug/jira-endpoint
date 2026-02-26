@@ -4,7 +4,7 @@ export default async function handler(req, res) {
    const apiToken = process.env.JIRA_API_TOKEN;
     const domain = "enphase.atlassian.net";
 
-    const auth = Buffer.from(`${email}:${apitoken}`).toString("base64");
+    const auth = Buffer.from(`${email}:${apiToken}`).toString("base64");
 
     // Always fetch issues updated in the last 2 hours
     const jql = "project IN (GSS, SWS, UPGD, EFW) AND labels = TSE_TIER3_FST_CRITICAL ORDER BY created DESC";
