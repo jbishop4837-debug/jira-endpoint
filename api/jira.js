@@ -7,9 +7,21 @@ export default async function handler(req, res) {
     const auth = Buffer.from(`${email}:${token}`).toString("base64");
 
     // URL-encoded JQL
-    const jql = encodeURIComponent(
-  'project = GSS AND updated >= "2026-02-20" AND issuekey > 0 ORDER BY updated DESC'
-);
+    const url = `https://${domain}/rest/api/3/search/jql`;
+
+const response = await fetch(url, {
+  method: "POST",
+  headers: {
+    Authorization: `Basic ${auth}`,
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    query: 'project = GSS AND updated >= "2026-02-20" AND issuekey > 0 ORDER BY updated DESC',
+    maxResults: 100
+  })
+});
+
 
 
 
