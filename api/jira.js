@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const auth = Buffer.from(`${email}:${token}`).toString("base64");
 
     // Always fetch issues updated in the last 2 hours
-    const jql = 'project = GSS AND updated >= -2h AND issuekey > 0 ORDER BY updated DESC';
+    const jql = 'project IN (GSS, SWS, UPGD, EFW) AND labels = TSE_TIER3_FST_CRITICAL ORDER BY created DESC';
 
     console.log("JQL sent to Jira:", jql);
 
