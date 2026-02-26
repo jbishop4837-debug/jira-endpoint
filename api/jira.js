@@ -19,17 +19,22 @@ const response = await fetch(url, {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    query: jql,
-    maxResults: 500,
-    fields: [
-      "summary",
-      "customfield_12953",   // siteId
-      "assignee",
-      "reporter",
-      "updated",
-      "status"
-    ]
-  })
+  queries: [
+    {
+      query: jql
+    }
+  ],
+  maxResults: 500,
+  fields: [
+    "summary",
+    "customfield_12953",
+    "assignee",
+    "reporter",
+    "updated",
+    "status"
+  ]
+})
+
 });
 
 
