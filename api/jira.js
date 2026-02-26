@@ -7,7 +7,10 @@ export default async function handler(req, res) {
     const auth = Buffer.from(`${email}:${token}`).toString("base64");
 
     // URL-encoded JQL
-    const jql = encodeURIComponent("project = GSS AND updated >= -1d");
+    const jql = encodeURIComponent(
+  "project = GSS AND updated >= -1d ORDER BY updated DESC"
+);
+
 
     // NEW REQUIRED ENDPOINT
     const url = `https://${domain}/rest/api/3/search/jql?query=${jql}&maxResults=100`;
