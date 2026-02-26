@@ -11,6 +11,7 @@ export default async function handler(req, res) {
   "project = GSS AND updated >= -1d AND statusCategory != Done ORDER BY updated DESC"
 );
 
+console.log("JQL sent to Jira:", decodeURIComponent(jql));
 
 
     // NEW REQUIRED ENDPOINT
