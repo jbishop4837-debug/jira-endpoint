@@ -1,64 +1,33 @@
 export default async function handler(req, res) {
   try {
-    const email = "jbishop@enphaseenergy.com";
-    const token = process.env.JIRA_API_TOKEN;
-    const domain = "enphase.atlassian.net";
+    const response = await fetch("https://jira-endpoint.vercel.app/api/jira");
+    const data = await response.json();
 
-    const auth = Buffer.from(`${email}:${token}`).toString("base64");
+    // Parse the raw Jira JSON string
+    const jira = JSON.parse(data.jiraResponse);
+    const issues = jira.issues || [];
 
-    const jql = 'project = GSS AND updated >= -2h AND issuekey > 0 ORDER BY updated DESC';
-
-    const response = await fetch(`https://${domain}/rest/api/3/search/jql`, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${auth}`,
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        jql: jql,
-        maxResults: 100,
-        fields: [
-          "summary",
-          "status",
-          "updated",
-          "assignee",
-          "reporter",
-          "customfield_12953"
-        ]
-      })
-    });
-
-    const text = await response.text();
-    const data = JSON.parse(text);
-
-    const issues = data.issues || [];
-
-    let csv = "key,summary,siteId,assignee,reporter,updated,status,checked\n";
-
-    const now = new Date().toISOString();
+    // CSV headers EXACTLY matching your Excel sheet
+    let csv = "JIRA Ticket,Issue Description,Site ID,JIRA Assignee,JIRA Reporter,Last Update,Ticket Status,Date Last Checked\n";
 
     for (const issue of issues) {
-      const fields = issue.fields || {};
+      const f = issue.fields;
 
-      const row = [
-        issue.key || "",
-        (fields.summary || "").replace(/,/g, " "),
-        fields.customfield_12953 || "",
-        fields.assignee?.displayName?.replace(/,/g, " ") || "",
-        fields.reporter?.displayName?.replace(/,/g, " ") || "",
-        fields.updated || "",
-        fields.status?.name?.replace(/,/g, " ") || "",
-        now
-      ];
+      const key = issue.key || "";
+      const summary = (f.summary || "").replace(/,/g, " ");
+      const siteId = f.customfield_12953 || "";
+      const assignee = f.assignee?.displayName || "";
+      const reporter = f.reporter?.displayName || "";
+      const updated = f.updated || "";
+      const status = f.status?.name || "";
 
-      csv += row.join(",") + "\n";
+      csv += `${key},${summary},${siteId},${assignee},${reporter},${updated},${status}\n`;
     }
 
     res.setHeader("Content-Type", "text/csv");
     res.status(200).send(csv);
 
   } catch (err) {
-    res.status(500).send("error," + err.toString());
+    res.status(500).json({ ok: false, error: err.toString() });
   }
 }
