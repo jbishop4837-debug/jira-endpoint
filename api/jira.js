@@ -8,33 +8,16 @@ export default async function handler(req, res) {
 
     const jql = "project IN (GSS, SWS, UPGD, EFW) AND labels = TSE_TIER3_FST_CRITICAL ORDER BY created DESC";
 
-    const url = `https://${domain}/rest/api/3/search/jql`;
+    const url = `https://${domain}/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=500`;
 
     const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Authorization": `Basic ${auth}`,
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        queries: [
-          {
-            query: jql
-          }
-        ],
-        startAt: 0,
-        maxResults: 500,
-        fields: [
-          "summary",
-          "customfield_12953",
-          "assignee",
-          "reporter",
-          "updated",
-          "status"
-        ]
-      })
-    });
+  method: "GET",
+  headers: {
+    "Authorization": `Basic ${auth}`,
+    "Accept": "application/json"
+  }
+});
+
 
     const text = await response.text();
 
